@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "179107539448",
+    "project_id": "flutter-portfolio-blog-app",
+    "storage_bucket": "flutter-portfolio-blog-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:179107539448:android:1a94a8e08c15d023f48e0d",
+        "android_client_info": {
+          "package_name": "com.example.blogapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYnZDVRGC7956AhBGOXD2JKKJuLUGGoKQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
