@@ -1,6 +1,6 @@
 import 'package:blogapp/constants/routes.dart';
 import 'package:blogapp/services/auth/auth_service.dart';
-import 'package:blogapp/views/portfolio/add_portfolio_view.dart';
+import 'package:blogapp/views/portfolio/my_profile.dart';
 import 'package:blogapp/views/dashboard_view.dart';
 import 'package:blogapp/views/auth/login_view.dart';
 import 'package:blogapp/views/auth/registeration_view.dart';
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         registerRoute: (context) => const Registerview(),
         verifyEmailRoute: (context) => const VerifyEmailView(),
         dashboardRoute: (context) => const DashboardView(),
-        addPortfolioRoute: (context) => const AddPortfolioView(),
+        profileRoute: (context) => MyProfile(),
       },
     );
   }
