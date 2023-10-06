@@ -1,6 +1,5 @@
 import 'package:blogapp/constants/routes.dart';
 import 'package:blogapp/services/auth/auth_service.dart';
-import 'package:blogapp/services/users/portfolio_view_service.dart';
 import 'package:blogapp/views/blog/add_blog_view.dart';
 import 'package:blogapp/views/blog/blog_detail_view.dart';
 import 'package:blogapp/views/portfolio/my_profile.dart';
