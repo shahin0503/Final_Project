@@ -18,8 +18,11 @@ class MyProfile extends StatefulWidget {
 }
 
 class _MyProfileState extends State<MyProfile> {
+  final TextEditingController userNameController = TextEditingController();
+
   String userUID = '';
   String userEmail = ''; // Store user's email here
+  String userName = '';
   List<String> skills = [];
   List<String> projects = [];
   List<String> achievements = [];
@@ -27,6 +30,7 @@ class _MyProfileState extends State<MyProfile> {
   @override
   void initState() {
     super.initState();
+
     // Fetch the user's email and update the state
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
@@ -35,11 +39,17 @@ class _MyProfileState extends State<MyProfile> {
             ''; // Use an empty string as a default value if email is null
         userUID = user.uid;
       });
-      _checkIfUserExist();
+      checkIfUserExist().then(
+        (_) {
+          setState(() {
+            userNameController.text = userName;
+          });
+        },
+      );
     }
   }
 
-  Future<void> _checkIfUserExist() async {
+  Future<void> checkIfUserExist() async {
     try {
       // Fetch data from the Firestore collection 'portfolio' where user_email matches
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -52,6 +62,7 @@ class _MyProfileState extends State<MyProfile> {
         var userData = querySnapshot.docs.first.data() as Map<String, dynamic>;
 
         setState(() {
+          userName = userData['user_name'];
           skills = List.from(userData['skills']);
           projects = List.from(userData['projects']);
           achievements = List.from(userData['achievements']);
@@ -64,6 +75,12 @@ class _MyProfileState extends State<MyProfile> {
   }
 
   @override
+  void dispose() {
+    userNameController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -71,8 +88,8 @@ class _MyProfileState extends State<MyProfile> {
         actions: [
           IconButton(
               onPressed: () {
-                widget._firestoreService.addUserData(
-                    userUID, userEmail, projects, achievements, skills);
+                widget._firestoreService.addUserData(userUID, userName,
+                    userEmail, projects, achievements, skills);
               },
               icon: Icon(Icons.done_all_sharp))
         ],
@@ -81,6 +98,17 @@ class _MyProfileState extends State<MyProfile> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            TextField(
+              decoration: InputDecoration(
+                labelText: 'User Name',
+              ),
+              controller: userNameController,
+              onChanged: (value) {
+                setState(() {
+                  userName = value;
+                });
+              },
+            ),
             TextField(
               decoration: const InputDecoration(
                 labelText: 'Email',

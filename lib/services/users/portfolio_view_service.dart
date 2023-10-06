@@ -15,7 +15,7 @@ class User {
 
   factory User.fromMap(Map<String, dynamic> data) {
     return User(
-      username: data['username'] ?? '',
+      username: data['user_name'] ?? '',
       email: data['user_email'] ?? '',
       projects: List.from(data['projects'] ?? []),
       skills: List.from(data['skills'] ?? []),

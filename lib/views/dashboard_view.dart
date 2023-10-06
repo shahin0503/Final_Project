@@ -17,7 +17,7 @@ class _DashboardViewState extends State<DashboardView> {
   final PageController pageController = PageController(initialPage: 0);
   int _selectedIndex = 0;
 
-  final List<String> _appBarTitles = ['Portfolio', 'Blogs', 'Contact'];
+  final List<String> _appBarTitles = ['Portfolio', 'Blogs', 'Contact Us'];
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +82,7 @@ class _DashboardViewState extends State<DashboardView> {
       case 1:
         return const BlogView();
       case 2:
-        return const ContactView();
+        return ContactView();
       default:
         const Text('Invalid');
     }

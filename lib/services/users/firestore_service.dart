@@ -6,6 +6,7 @@ class FirestoreService {
 
   Future<void> addUserData(
       String userUID,
+      String userName,
       String userEmail,
       List<String> projects,
       List<String> achievements,
@@ -13,6 +14,7 @@ class FirestoreService {
     try {
       await _portfolioCollection.doc(userUID).set({
         'user_uid': userUID,
+        'user_name': userName,
         'user_email': userEmail,
         'projects': projects,
         'achievements': achievements,
