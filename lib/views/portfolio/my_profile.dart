@@ -69,7 +69,6 @@ class _MyProfileState extends State<MyProfile> {
         });
       } else {}
     } catch (e) {
-      // Handle errors, if any
       print('Error fetching user data: $e');
     }
   }
@@ -90,8 +89,9 @@ class _MyProfileState extends State<MyProfile> {
               onPressed: () {
                 widget._firestoreService.addUserData(userUID, userName,
                     userEmail, projects, achievements, skills);
+                Navigator.of(context).pop();
               },
-              icon: Icon(Icons.done_all_sharp))
+              icon: const Icon(Icons.done_all_sharp))
         ],
       ),
       body: Padding(
@@ -99,7 +99,7 @@ class _MyProfileState extends State<MyProfile> {
         child: Column(
           children: [
             TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'User Name',
               ),
               controller: userNameController,

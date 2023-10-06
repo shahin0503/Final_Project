@@ -3,3 +3,7 @@ const registerRoute = '/register/';
 const verifyEmailRoute = '/verify-email/';
 const dashboardRoute = '/dashboard/';
 const profileRoute = '/profile/';
+const portfolioDetailRoute = '/portfolio-detail/';
+const addBlogRoute = '/add-blog/';
+const updateBlogRoute = '/update-blog/';
+const blogDetailRoute = '/blog-detail/';

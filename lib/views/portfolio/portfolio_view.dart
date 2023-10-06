@@ -35,7 +35,6 @@ class _PortfolioViewState extends State<PortfolioView> {
         users = fetchedUsers;
       });
     } catch (e) {
-      // Handle errors, if any
       print('Error fetching user data: $e');
     }
   }
@@ -49,19 +48,25 @@ class _PortfolioViewState extends State<PortfolioView> {
             itemCount: users.length,
             itemBuilder: (context, index) {
               User user = users[index];
-              return Card(
-                elevation: 4,
-                margin: EdgeInsets.all(8),
-                child: ListTile(
-                  title: Text(user.username),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Email: ${user.email}'),
-                      Text('Projects: ${user.projects.join(', ')}'),
-                      Text('Skills: ${user.skills.join(', ')}'),
-                      Text('Achievements: ${user.achievements.join(', ')}'),
-                    ],
+              return GestureDetector(
+                onTap: () {
+                  Navigator.of(context)
+                      .pushNamed(portfolioDetailRoute, arguments: user);
+                },
+                child: Card(
+                  elevation: 4,
+                  margin: const EdgeInsets.all(8),
+                  child: ListTile(
+                    title: Text(user.username),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Email: ${user.email}'),
+                        Text('Projects: ${user.projects.join(', ')}'),
+                        Text('Skills: ${user.skills.join(', ')}'),
+                        Text('Achievements: ${user.achievements.join(', ')}'),
+                      ],
+                    ),
                   ),
                 ),
               );

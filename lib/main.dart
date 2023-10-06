@@ -1,10 +1,14 @@
 import 'package:blogapp/constants/routes.dart';
 import 'package:blogapp/services/auth/auth_service.dart';
+import 'package:blogapp/services/users/portfolio_view_service.dart';
+import 'package:blogapp/views/blog/add_blog_view.dart';
+import 'package:blogapp/views/blog/blog_detail_view.dart';
 import 'package:blogapp/views/portfolio/my_profile.dart';
 import 'package:blogapp/views/dashboard_view.dart';
 import 'package:blogapp/views/auth/login_view.dart';
 import 'package:blogapp/views/auth/registeration_view.dart';
 import 'package:blogapp/views/auth/verify_email_view.dart';
+import 'package:blogapp/views/portfolio/portfolio_detail_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -27,6 +31,9 @@ class MyApp extends StatelessWidget {
         verifyEmailRoute: (context) => const VerifyEmailView(),
         dashboardRoute: (context) => const DashboardView(),
         profileRoute: (context) => MyProfile(),
+        portfolioDetailRoute: (context) => const PortfolioDetailView(),
+        addBlogRoute: (context) => const AddBlogView(),
+        blogDetailRoute: (context) => const BlogDetailView(),
       },
     );
   }
