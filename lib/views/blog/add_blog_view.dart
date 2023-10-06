@@ -21,30 +21,39 @@ class _AddBlogViewState extends State<AddBlogView> {
       _formKey.currentState?.save();
 
       Map<String, dynamic> blogData = {
-        'useremail': 'user@example.com', // Replace with the user's email
-        'blogtitle': blogTitle,
+        'user_email': 'user@example.com', // Replace with the user's email
+        'title': blogTitle,
         'description': blogDescription,
       };
 
-      String jsonData = jsonEncode(blogData);
-
+  print('submitBlog');
+      String jsonData = jsonEncode({"data": blogData});
+      print('jsondata $jsonData');
       // Send data to your Strapi API endpoint
-      final response = await http.post(
-        Uri.parse('https://192.168.1.100:1337/blog'),
+      try {
+        final response = await http.post(
+        Uri.parse('http://192.168.0.109:1337/api/blogs'),
         headers: {
           'Content-Type': 'application/json',
         },
-        body: jsonData,
+      body: json.encode({"data": blogData}),
+        
       );
 
       if (response.statusCode == 201) {
         // Blog post created successfully
-        Navigator.of(context).pop();
+        // Navigator.of(context).pop();
+        print('blog created');
       } else {
         // Handle error, show snackbar or dialog to inform the user
         print(
             'Failed to create blog post. Status code: ${response.statusCode}');
       }
+      } catch (e) {
+  print('Error fetching blogs: $e');
+        
+      }
+      
     }
   }
 
@@ -60,7 +69,7 @@ class _AddBlogViewState extends State<AddBlogView> {
                   _formKey.currentState?.save();
                   _submitBlog();
 
-                  Navigator.of(context).pop();
+                  // Navigator.of(context).pop();
                 }
               },
               icon: const Icon(Icons.done_all_sharp))

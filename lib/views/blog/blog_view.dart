@@ -1,5 +1,7 @@
 import 'package:blogapp/constants/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
 
 class BlogView extends StatefulWidget {
   const BlogView({super.key});
@@ -15,6 +17,30 @@ class _BlogViewState extends State<BlogView> {
     'dfdfd',
   ];
 
+   fetchblogs() async {
+  //   print('fetchBlogs called');
+  // // The URL of the users collection type endpoint
+  // // var url = Uri.parse('http://localhost:1337/api/blogs');
+  // // // Make a GET request and store the response
+  // // var response = await http.get(url);
+  // // print('response $response');
+  // // // Print the status code and the body of the response
+  // // print('Response status: ${response.statusCode}');
+  // // print('Response body: ${response.body}');
+
+  //     http.Response response = await http.get(Uri.parse("http://localhost:1337/api/blogs"));
+  //     print('fetchBlogs response $response');
+  http.Response response;
+try {
+  response = await http.get(Uri.parse("http://192.168.0.109:1337/api/blogs"));
+  print('fetchBlogs response ${response.statusCode}');
+  print('Response body: ${response.body}');
+} catch (error) {
+  print('Error fetching blogs: $error');
+}
+
+}
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -25,8 +51,10 @@ class _BlogViewState extends State<BlogView> {
             itemBuilder: (context, index) {
               //  blog = blogs[index];
               return GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamed(blogDetailRoute);
+                onTap: () async {
+
+                 await fetchblogs();
+                  // Navigator.of(context).pushNamed(blogDetailRoute);
                 },
                 child: const Card(
                     elevation: 2,
