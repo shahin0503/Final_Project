@@ -2,6 +2,7 @@ import 'package:blogapp/constants/routes.dart';
 import 'package:blogapp/services/auth/auth_service.dart';
 import 'package:blogapp/views/blog/add_blog_view.dart';
 import 'package:blogapp/views/blog/blog_detail_view.dart';
+import 'package:blogapp/views/blog/update_blog_view.dart';
 import 'package:blogapp/views/portfolio/my_profile.dart';
 import 'package:blogapp/views/dashboard_view.dart';
 import 'package:blogapp/views/auth/login_view.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         profileRoute: (context) => MyProfile(),
         portfolioDetailRoute: (context) => const PortfolioDetailView(),
         addBlogRoute: (context) => const AddBlogView(),
+        updateBlogRoute:(context) => const UpdateBlogView(),
         blogDetailRoute: (context) => const BlogDetailView(),
       },
     );

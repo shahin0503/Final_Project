@@ -12,7 +12,6 @@ class AddBlogView extends StatefulWidget {
 
 class _AddBlogViewState extends State<AddBlogView> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   String blogTitle = '';
   String blogDescription = '';
   String userEmail = '';
@@ -45,7 +44,7 @@ class _AddBlogViewState extends State<AddBlogView> {
       // Send data to your Strapi API endpoint
       try {
         final response = await http.post(
-          Uri.parse('http://10.1.86.163:1337/api/blogs'),
+          Uri.parse('http://192.168.1.105:1337/api/blogs'),
           headers: {
             'Content-Type': 'application/json',
           },
