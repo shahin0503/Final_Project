@@ -56,8 +56,11 @@ class _LoginViewState extends State<LoginView> {
                         ),
                         hintText: 'Enter email here',
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        )),
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(
+                              color: Colors.teal,
+                              width: 12,
+                            ))),
                   ),
                   const Padding(padding: EdgeInsets.all(8)),
                   TextFormField(
@@ -72,56 +75,78 @@ class _LoginViewState extends State<LoginView> {
                         ),
                         hintText: 'Enter password here',
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        )),
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(
+                              color: Colors.teal,
+                              width: 12,
+                            ))),
                   ),
                   const Padding(
                       padding: EdgeInsets.symmetric(
                     horizontal: 20,
                     vertical: 20,
                   )),
-                  ElevatedButton(
-                    onPressed: () async {
-                      final email = _email.text;
-                      final password = _password.text;
-                      try {
-                        await AuthService.firebase()
-                            .login(email: email, password: password);
-                        final user = AuthService.firebase().currentUser;
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () async {
+                          final email = _email.text;
+                          final password = _password.text;
+                          try {
+                            await AuthService.firebase()
+                                .login(email: email, password: password);
+                            final user = AuthService.firebase().currentUser;
 
-                        if (user?.isEmailVerified ?? false) {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                            dashboardRoute,
-                            (route) => false,
-                          );
-                        } else {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                            verifyEmailRoute,
-                            (route) => false,
-                          );
-                        }
-                      } on InvalidLoginCredentialsAuthException {
-                        await showErrorDialog(
-                          context,
-                          'User not found',
-                        );
-                      } on GenericAuthException {
-                        await showErrorDialog(
-                          context,
-                          'Authentication error',
-                        );
-                      }
-                    },
-                    child: const Text('Login'),
+                            if (user?.isEmailVerified ?? false) {
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                dashboardRoute,
+                                (route) => false,
+                              );
+                            } else {
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                verifyEmailRoute,
+                                (route) => false,
+                              );
+                            }
+                          } on InvalidLoginCredentialsAuthException {
+                            await showErrorDialog(
+                              context,
+                              'User not found',
+                            );
+                          } on GenericAuthException {
+                            await showErrorDialog(
+                              context,
+                              'Authentication error',
+                            );
+                          }
+                        },
+                        style: ButtonStyle(
+                            fixedSize: MaterialStateProperty.all(Size(200, 50)),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ))),
+                        child: const Text('Login'),
+                      ),
+                    ],
                   ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        registerRoute,
-                        (route) => false,
-                      );
-                    },
-                    child: const Text('New user, click here to register'),
+                  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('New user, click here to'),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                              registerRoute,
+                              (route) => false,
+                            );
+                          },
+                          child: const Text('register'),
+                        ),
+                      ],
+                    ),
                   )
                 ],
               ),

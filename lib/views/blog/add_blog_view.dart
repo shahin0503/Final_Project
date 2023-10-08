@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -38,13 +39,13 @@ class _AddBlogViewState extends State<AddBlogView> {
         'description': blogDescription,
       };
 
-      print('submitBlog');
+      log('submitBlog');
       String jsonData = jsonEncode({"data": blogData});
-      print('jsondata $jsonData');
+      log('jsondata $jsonData');
       // Send data to your Strapi API endpoint
       try {
         final response = await http.post(
-          Uri.parse('http://192.168.1.105:1337/api/blogs'),
+          Uri.parse('http://192.168.173.222:1337/api/blogs'),
           headers: {
             'Content-Type': 'application/json',
           },
@@ -54,14 +55,22 @@ class _AddBlogViewState extends State<AddBlogView> {
         if (response.statusCode == 201 || response.statusCode == 200) {
           // Blog post created successfully
           Navigator.of(context).pop();
-          print('blog created');
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Blog added successfully!'),
+              duration: Duration(
+                  seconds:
+                      2), // Duration for which the snackbar will be visible
+            ),
+          );
+          log('blog created');
         } else {
           // Handle error, show snackbar or dialog to inform the user
-          print(
+          log(
               'Failed to create blog post. Status code: ${response.statusCode}');
         }
       } catch (e) {
-        print('Error fetching blogs: $e');
+        log('Error fetching blogs: $e');
       }
     }
   }
@@ -83,29 +92,58 @@ class _AddBlogViewState extends State<AddBlogView> {
           key: _formKey,
           child: Column(
             children: [
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Title',
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 20, 8, 8),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 20,
+                      ),
+                      labelText: 'Title',
+                      labelStyle: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 18),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: const BorderSide(
+                            color: Colors.teal,
+                            width: 12,
+                          ))),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter blog title';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) => blogTitle = value!,
                 ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter blog title';
-                  }
-                  return null;
-                },
-                onSaved: (value) => blogTitle = value!,
               ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Description',
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  maxLines: null,
+                  decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 20,
+                      ),
+                      labelText: 'Description',
+                      labelStyle: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 18),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: const BorderSide(
+                            color: Colors.teal,
+                            width: 12,
+                          ))),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter blog description';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) => blogDescription = value!,
                 ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter blog description';
-                  }
-                  return null;
-                },
-                onSaved: (value) => blogDescription = value!,
               )
             ],
           )),

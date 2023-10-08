@@ -55,8 +55,13 @@ class _RegisterviewState extends State<Registerview> {
                           vertical: 20,
                         ),
                         hintText: 'Enter email here',
-                        border: OutlineInputBorder(
+                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide(
+                            color: Colors.teal,
+                            width: 12,
+                          )
+                          
                         )),
                   ),
                   const Padding(padding: EdgeInsets.all(8)),
@@ -73,6 +78,11 @@ class _RegisterviewState extends State<Registerview> {
                         hintText: 'Enter password here',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide(
+                            color: Colors.teal,
+                            width: 12,
+                          )
+                          
                         )),
                   ),
                   const Padding(
@@ -113,17 +123,33 @@ class _RegisterviewState extends State<Registerview> {
                       //   );
                       // }
                     },
+                    style: ButtonStyle(
+                            fixedSize: MaterialStateProperty.all(Size(200, 50)),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ))),
                     child: const Text('Register'),
                   ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        loginRoute,
-                        (route) => false,
-                      );
-                    },
-                    child:
-                        const Text('Already registered, click here to login'),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Already registered, click here to'),
+                      Container(
+                        width: 50,
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                              loginRoute,
+                              (route) => false,
+                            );
+                          },
+                          
+                          child:
+                              const Text('login'),
+                        ),
+                      ),
+                    ],
                   )
                 ],
               ),

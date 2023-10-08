@@ -3,7 +3,7 @@ import 'package:blogapp/services/auth/auth_service.dart';
 import 'package:blogapp/views/blog/add_blog_view.dart';
 import 'package:blogapp/views/blog/blog_detail_view.dart';
 import 'package:blogapp/views/blog/update_blog_view.dart';
-import 'package:blogapp/views/portfolio/my_profile.dart';
+import 'package:blogapp/views/portfolio/my_portfolio.dart';
 import 'package:blogapp/views/dashboard_view.dart';
 import 'package:blogapp/views/auth/login_view.dart';
 import 'package:blogapp/views/auth/registeration_view.dart';
@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(colorScheme: ColorScheme.fromSwatch()),
       home: const MyHomePage(),
+      debugShowCheckedModeBanner: false,
       routes: {
         loginRoute: (context) => const LoginView(),
         registerRoute: (context) => const Registerview(),
@@ -32,9 +33,9 @@ class MyApp extends StatelessWidget {
         dashboardRoute: (context) => const DashboardView(),
         profileRoute: (context) => MyProfile(),
         portfolioDetailRoute: (context) => const PortfolioDetailView(),
-        addBlogRoute: (context) => const AddBlogView(),
-        updateBlogRoute:(context) => const UpdateBlogView(),
         blogDetailRoute: (context) => const BlogDetailView(),
+        addBlogRoute: (context) => const AddBlogView(),
+        updateBlogRoute: (context) => const UpdateBlogView(),
       },
     );
   }

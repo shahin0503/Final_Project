@@ -55,35 +55,78 @@ class _ContactViewState extends State<ContactView> {
   }
 
   final _formKey = GlobalKey<FormState>();
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   late String name, email, title, description;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                TextFormField(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 20, 8, 8),
+                child: TextFormField(
                   controller: TextEditingController(text: userName),
-                  decoration: const InputDecoration(labelText: 'User name'),
+                  decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 20,
+                      ),
+                      labelText: 'User Name',
+                      labelStyle: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
+                      ),
+                      disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: const BorderSide(
+                              width: 2,
+                              color: Color.fromARGB(255, 187, 212, 209)))),
                   enabled: false,
                 ),
-                const SizedBox(height: 16),
-                TextFormField(
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
                   controller: TextEditingController(text: userEmail),
-                  decoration: const InputDecoration(labelText: 'Email'),
+                  decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 20,
+                      ),
+                      labelText: 'Email',
+                      labelStyle: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
+                      ),
+                      disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: const BorderSide(
+                              width: 2,
+                              color: Color.fromARGB(255, 187, 212, 209)))),
                   enabled: false,
                 ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Title'),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 20,
+                      ),
+                      labelText: 'Title',
+                      labelStyle: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 18),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: const BorderSide(
+                            color: Colors.teal,
+                            width: 12,
+                          ))),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a title';
@@ -92,9 +135,24 @@ class _ContactViewState extends State<ContactView> {
                   },
                   onSaved: (value) => title = value!,
                 ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Description'),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 20,
+                      ),
+                      labelText: 'Description',
+                      labelStyle: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 18),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: const BorderSide(
+                            color: Colors.teal,
+                            width: 12,
+                          ))),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a description';
@@ -104,35 +162,40 @@ class _ContactViewState extends State<ContactView> {
                   onSaved: (value) => description = value!,
                   keyboardType: TextInputType.multiline,
                 ),
-                const SizedBox(height: 32),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      widget._firestoreService
-                          .addContactFormData(
-                              userUID, userName, userEmail, title, description)
-                          .then((_) {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          content: Text('Form submitted successfully!'),
+              ),
+              const SizedBox(height: 32),
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+                    widget._firestoreService
+                        .addContactFormData(
+                            userUID, userName, userEmail, title, description)
+                        .then((_) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text('Message send successfully!'),
+                        duration: Duration(seconds: 2),
+                      ));
+                    }).catchError((error) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content:
+                              Text('Error sending message. Please try again.'),
                           duration: Duration(seconds: 2),
-                        ));
-                      }).catchError((error) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                                'Error submitting form. Please try again.'),
-                            duration: Duration(seconds: 2),
-                          ),
-                        );
-                      });
-                    }
-                  },
-                  child: const Text('Submit'),
-                ),
-              ],
-            ),
+                        ),
+                      );
+                    });
+                  }
+                },
+                style: ButtonStyle(
+                            fixedSize: MaterialStateProperty.all(Size(200, 50)),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ))),
+                child: const Text('Send'),
+              ),
+            ],
           ),
         ),
       ),

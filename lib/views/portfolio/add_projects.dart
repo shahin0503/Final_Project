@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class AddProjectsBottomSheet extends StatefulWidget {
   final void Function(String title, String description) addProject;
+  final void Function(String title, String description) onAdd;
 
-  const AddProjectsBottomSheet({super.key, required this.addProject});
+  const AddProjectsBottomSheet({super.key, required this.addProject, required this.onAdd});
 
   @override
   State<AddProjectsBottomSheet> createState() => _AddProjectsBottomSheetState();
@@ -21,31 +22,68 @@ class _AddProjectsBottomSheetState extends State<AddProjectsBottomSheet> {
       key: _formKey,
       child: Column(
         children: [
-          TextFormField(
-            decoration: const InputDecoration(labelText: 'Project Title'),
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please enter project title';
-              }
-              return null;
-            },
-            onSaved: (value) => _title = value!,
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: TextFormField(
+              decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 20,
+                              ),
+                              labelText: 'Project Title',
+                              labelStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18
+                              ),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide: BorderSide(
+                                    color: Colors.teal,
+                                    width: 12,
+                                  ))),
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Please enter project title';
+                }
+                return null;
+              },
+              onSaved: (value) => _title = value!,
+            ),
           ),
-          TextFormField(
-            decoration: const InputDecoration(labelText: 'Description'),
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please enter project description';
-              }
-              return null;
-            },
-            onSaved: (value) => _description = value!,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7),
+            child: TextFormField(
+              decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 20,
+                              ),
+                              labelText: 'Description',
+                              labelStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18
+                              ),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide: BorderSide(
+                                    color: Colors.teal,
+                                    width: 12,
+                                  ))),
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Please enter project description';
+                }
+                return null;
+              },
+              onSaved: (value) => _description = value!,
+            ),
           ),
           ElevatedButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState?.save();
-                widget.addProject(_title, _description);
+                widget.onAdd(_title, _description);
+                // addProject(_title, _description);
                 Navigator.of(context).pop();
               }
             },

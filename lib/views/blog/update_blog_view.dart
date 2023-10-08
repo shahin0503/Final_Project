@@ -1,10 +1,8 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:blogapp/services/blogs/blog_view_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
 
 class UpdateBlogView extends StatefulWidget {
   const UpdateBlogView({super.key});
@@ -19,9 +17,9 @@ class _UpdateBlogViewState extends State<UpdateBlogView> {
   int id = 0;
   TextEditingController titleController = TextEditingController();
   TextEditingController descController = TextEditingController();
-    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-Future<void> _updateBlog() async {
+  Future<void> _updateBlog() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState?.save();
 
@@ -36,7 +34,7 @@ Future<void> _updateBlog() async {
       // Send data to your Strapi API endpoint
       try {
         final response = await http.put(
-          Uri.parse('http://192.168.1.105:1337/api/blogs/$id'),
+          Uri.parse('http://192.168.173.222:1337/api/blogs/$id'),
           headers: {
             'Content-Type': 'application/json',
           },
@@ -46,6 +44,14 @@ Future<void> _updateBlog() async {
         if (response.statusCode == 201 || response.statusCode == 200) {
           // Blog post created successfully
           Navigator.of(context).pop();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Blog updated successfully!'),
+              duration: Duration(
+                  seconds:
+                      2), // Duration for which the snackbar will be visible
+            ),
+          );
           print('blog created');
         } else {
           // Handle error, show snackbar or dialog to inform the user
@@ -60,12 +66,13 @@ Future<void> _updateBlog() async {
 
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic>? arguments = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-Blog? blog = arguments?['blog'] as Blog?;
+    Map<String, dynamic>? arguments =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    Blog? blog = arguments?['blog'] as Blog?;
 
-        titleController.text = blog!.title;
-        descController.text = blog.description;
-        id = blog.id;
+    titleController.text = blog!.title;
+    descController.text = blog.description;
+    id = blog.id;
 
     return Scaffold(
       appBar: AppBar(
@@ -82,35 +89,63 @@ Blog? blog = arguments?['blog'] as Blog?;
           key: _formKey,
           child: Column(
             children: [
-              TextFormField(
-                controller: titleController,
-                decoration: const InputDecoration(
-                  labelText: 'Title',
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 20, 8, 8),
+                child: TextFormField(
+                  controller: titleController,
+                  decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 20,
+                      ),
+                      labelText: 'Title',
+                      labelStyle: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 18),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: const BorderSide(
+                            color: Colors.teal,
+                            width: 12,
+                          ))),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter blog title';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) => blogTitle = value!,
                 ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter blog title';
-                  }
-                  return null;
-                },
-                onSaved: (value) => blogTitle = value!,
               ),
-              TextFormField(
-                controller: descController,
-                decoration: const InputDecoration(
-                  labelText: 'Description',
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  maxLines: null,
+                  controller: descController,
+                  decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 20,
+                      ),
+                      labelText: 'Description',
+                      labelStyle: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 18),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: const BorderSide(
+                            color: Colors.teal,
+                            width: 12,
+                          ))),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter blog description';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) => blogDescription = value!,
                 ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter blog description';
-                  }
-                  return null;
-                },
-                onSaved: (value) => blogDescription = value!,
               )
             ],
           )),
     );
   }
 }
-

@@ -35,7 +35,7 @@ class _BlogViewState extends State<BlogView> {
     http.Response response;
     try {
       response =
-          await http.get(Uri.parse("http://192.168.1.105:1337/api/blogs"));
+          await http.get(Uri.parse("http://192.168.173.222:1337/api/blogs"));
       if (response.statusCode == 200) {
         var responseData = json.decode(response.body)["data"];
         log('responseData $responseData');
@@ -65,9 +65,17 @@ class _BlogViewState extends State<BlogView> {
     http.Response response;
     try {
       response = await http
-          .delete(Uri.parse("http://192.168.1.105:1337/api/blogs/$id"));
+          .delete(
+            Uri.parse("http://192.168.173.222:1337/api/blogs/$id"));
       if (response.statusCode == 200) {
         log('deleteBlog $id deleted');
+        ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Blog deleted successfully!'),
+          duration: Duration(seconds: 2), // Duration for which the snackbar will be visible
+        ),
+      );
+      fetchblogs();
       }
     } catch (error) {
       log('Error fetching blogs: $error');
@@ -76,67 +84,79 @@ class _BlogViewState extends State<BlogView> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: ListView.builder(
-            itemCount: blogs.length,
-            scrollDirection: Axis.vertical,
-            itemBuilder: (context, index) {
-              Blog blog = blogs[index];
-
-              return GestureDetector(
-                onTap: () async {},
-                child: Card(
-                  elevation: 2,
-                  margin: const EdgeInsets.all(8),
-                  child: ListTile(
-                    title: Text(blog.title),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(blog.getPreview()),
-                      ],
+    return Scaffold(
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: blogs.length,
+              scrollDirection: Axis.vertical,
+              itemBuilder: (context, index) {
+                Blog blog = blogs[index];
+    
+                return GestureDetector(
+                  onTap: () async {
+                    Navigator.of(context)
+                        .pushNamed(blogDetailRoute, arguments: blog);
+                  },
+                  child: Card(
+                    elevation: 4,
+                    margin: const EdgeInsets.all(8),
+                    child: ListTile(
+                      title: Text(blog.title, style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(blog.getPreview(), style: TextStyle(
+                            fontSize: 14,
+                          ),),
+                        ],
+                      ),
+                      trailing: blog.user_email == userEmail
+                          ? PopupMenuButton<String>(
+                              onSelected: (String choice) async {
+                                if (choice == 'edit') {
+                                  await Navigator.of(context).pushNamed(
+                                    updateBlogRoute,
+                                    arguments: {'blog': blog},
+                                  );
+                                  fetchblogs();
+                                } else if (choice == 'delete') {
+                                  await deleteBlog(blog.id);
+                                  fetchblogs();
+                                }
+                              },
+                              itemBuilder: (BuildContext context) {
+                                return ['edit', 'delete']
+                                    .map((String choice) => PopupMenuItem<String>(
+                                          value: choice,
+                                          child: Text(choice),
+                                        ))
+                                    .toList();
+                              },
+                            )
+                          : null,
                     ),
-                    trailing: blog.user_email == userEmail
-                        ? PopupMenuButton<String>(
-                            onSelected: (String choice) async {
-                              if (choice == 'edit') {
-                                await Navigator.of(context).pushNamed(
-                                  updateBlogRoute,
-                                  arguments: {'blog': blog},
-                                );
-                                fetchblogs();
-                              } else if (choice == 'delete') {
-                                await deleteBlog(blog.id);
-                                fetchblogs();
-                              }
-                            },
-                            itemBuilder: (BuildContext context) {
-                              return ['edit', 'delete']
-                                  .map((String choice) => PopupMenuItem<String>(
-                                        value: choice,
-                                        child: Text(choice),
-                                      ))
-                                  .toList();
-                            },
-                          )
-                        : null,
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
-        ),
-        FloatingActionButton(
-          onPressed: () async {
-            await Navigator.of(context).pushNamed(addBlogRoute);
-            fetchblogs();
-            // Handle button press if needed
-          },
-          child: const Icon(Icons.person_3_sharp),
-        ),
-      ],
+           
+        ],
+        
+      ),
+      floatingActionButton: FloatingActionButton(
+            onPressed: () async {
+              await Navigator.of(context).pushNamed(addBlogRoute);
+              fetchblogs();
+              // Handle button press if needed
+            },
+            child: const Icon(Icons.add),
+          ),
     );
   }
 }

@@ -20,7 +20,7 @@ class Blog {
 
   String getPreview() {
     // Adjust the preview length according to your needs
-    const int maxLength = 10;
+    const int maxLength = 200;
     if (description.length <= maxLength) {
       return description;
     } else {
